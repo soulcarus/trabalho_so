@@ -3,17 +3,16 @@
 #define LED_RED 11
 #define LED_YELLOW 12
 #define LED_GREEN 13
-#define BUTTON_PIN 2  // Botão para simular pedestre
+#define BUTTON_PIN 2
 
 void setupPins() {
     pinMode(LED_RED, OUTPUT);
     pinMode(LED_YELLOW, OUTPUT);
     pinMode(LED_GREEN, OUTPUT);
-    pinMode(BUTTON_PIN, INPUT_PULLUP);  // Botão com pull-up interno
+    pinMode(BUTTON_PIN, INPUT_PULLUP);
 }
 
-// Variáveis globais para sincronização simples
-int pedestrianRequest = 0;  // 1 se pedestre quer atravessar
+int pedestrianRequest = 0;
 
 int taskGreenLight() {
     static unsigned long lastTime = 0;
