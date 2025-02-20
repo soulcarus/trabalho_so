@@ -4,7 +4,7 @@
 #define MAX_TASKS 5
 
 typedef struct {
-    int (*taskFunction)();
+    int (*taskFunction)( int state );
     int active;
 } Task;
 
@@ -12,4 +12,4 @@ void kernelInit();
 void kernelAddTask(int (*func)());
 void kernelRun();
 
-#endif
+#endif  
