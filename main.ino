@@ -5,9 +5,7 @@ void setup() {
     setupPins();
 
     kernelInit();
-    kernelAddTask(taskGreenLight);
-    kernelAddTask(taskYellowLight);
-    kernelAddTask(taskRedLight);
+    kernelAddTask(taskTrafficLight);
     kernelAddTask(taskPedestrianSensor);
 
     Serial.println("Semáforo Inteligente Iniciado");
