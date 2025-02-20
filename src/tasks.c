@@ -14,55 +14,47 @@ void setupPins() {
 
 int pedestrianRequest = 0;
 
-int taskGreenLight() {
+int taskTrafficLight(int state) {
     static unsigned long lastTime = 0;
     unsigned long now = millis();
-    int baseTime = pedestrianRequest ? 2000 : 5000;
-
-    if (now - lastTime < baseTime) {
-        digitalWrite(LED_GREEN, HIGH);
-        digitalWrite(LED_YELLOW, LOW);
-        digitalWrite(LED_RED, LOW);
-        Serial.println("Semáforo: Verde");
-        return 1;
+    int timeLimit;
+    if (state == 0) {  // Verde
+        timeLimit = pedestrianRequest ? 2000 : 5000;
+        if (now - lastTime < timeLimit) {
+            digitalWrite(LED_GREEN, HIGH);
+            digitalWrite(LED_YELLOW, LOW);
+            digitalWrite(LED_RED, LOW);
+            Serial.println("Semáforo: Verde");
+            return 0;
+        }
+    } else if (state == 1) {
+        timeLimit = 2000;
+        if (now - lastTime < timeLimit) {
+            digitalWrite(LED_GREEN, LOW);
+            digitalWrite(LED_YELLOW, HIGH);
+            digitalWrite(LED_RED, LOW);
+            Serial.println("Semáforo: Amarelo");
+            return 0;
+        }
+    } else {
+        timeLimit = 5000;
+        if (now - lastTime < timeLimit) {
+            digitalWrite(LED_GREEN, LOW);
+            digitalWrite(LED_YELLOW, LOW);
+            digitalWrite(LED_RED, HIGH);
+            Serial.println("Semáforo: Vermelho");
+            return 0;
+        }
     }
     lastTime = now;
     pedestrianRequest = 0;
-    return 0;
+    return 1;
 }
 
-int taskYellowLight() {
-    static unsigned long lastTime = 0;
-    unsigned long now = millis();
-    if (now - lastTime < 2000) {
-        digitalWrite(LED_GREEN, LOW);
-        digitalWrite(LED_YELLOW, HIGH);
-        digitalWrite(LED_RED, LOW);
-        Serial.println("Semáforo: Amarelo");
-        return 1;
-    }
-    lastTime = now;
-    return 0;
-}
-
-int taskRedLight() {
-    static unsigned long lastTime = 0;
-    unsigned long now = millis();
-    if (now - lastTime < 5000) {
-        digitalWrite(LED_GREEN, LOW);
-        digitalWrite(LED_YELLOW, LOW);
-        digitalWrite(LED_RED, HIGH);
-        Serial.println("Semáforo: Vermelho");
-        return 1;
-    }
-    lastTime = now;
-    return 0;
-}
-
-int taskPedestrianSensor() {
+int taskPedestrianSensor( int state) {
     if (digitalRead(BUTTON_PIN) == LOW) {
         pedestrianRequest = 1;
         Serial.println("Pedestre solicitou atravessar");
     }
-    return 1;
+    return 0;
 }
